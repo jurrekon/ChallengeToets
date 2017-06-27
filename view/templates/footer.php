@@ -2,9 +2,8 @@
 <?php
 	echo "Uw userId is " . $_SESSION['userId'];
 	echo "</br>";
-	echo "Uw username is " . $_SESSION['username'];
+	echo "Uw username is " . $_SESSION['email'];
 	echo "</br>";
-	echo "Uw role is " . $_SESSION['role'];
 ?>
 </div>
 </body>

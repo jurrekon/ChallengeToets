@@ -15,13 +15,24 @@
             </div>
 
             <ul class="nav navbar-nav">
-                <li><a href="<?= URL ?>challenge/register">Registreer</a></li>
+                <li><a href="<?= URL ?>">Niet Klikken</a></li>
 	        </ul>
 
             <!-- navbar part that's on the right side -->
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="<?= URL ?>challenge/login"><span class="glyphicon glyphicon-log-in"></span> Inloggen</a></li>
-            </ul>
 
+<?php if(isset($_SESSION['logged in'])): ?>
+
+				<li><a>Welkom, <?= $_SESSION['firstname']; ?></a></li>
+				<li><a href="<?= URL ?>challenge/logout">Logout</a></li>
+
+<?php ; else: ?>
+
+            	<li><a href="<?= URL ?>challenge/register">Registreer</a></li>
+                <li><a href="<?= URL ?>challenge/login">Login</a></li>
+
+<?php endif; ?>
+
+            </ul>
         </div>
 	</nav>
