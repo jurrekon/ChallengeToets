@@ -15,7 +15,13 @@
             </div>
 
             <ul class="nav navbar-nav">
-                <li><a href="<?= URL ?>">Niet Klikken</a></li>
+
+<?php if(isset($_SESSION['logged in']) && $_SESSION['role'] == 'employee'): ?>
+
+                <li><a href="<?= URL ?>challenge/create">Kapper toevoegen</a></li>
+
+<?php endif; ?>
+
 	        </ul>
 
             <!-- navbar part that's on the right side -->

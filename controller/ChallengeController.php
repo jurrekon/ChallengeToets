@@ -67,7 +67,7 @@ function create()
 
 function createSave()
 {
-	if (!createUser($_POST['firstname'], $_POST['lastname'], $_POST['username'],  $_POST['password'], $_POST['email'], $_POST['role'])) {
+	if (!createEmployee($_POST['firstname'], $_POST['lastname'], $_POST['telephone'],  $_POST['mobilephone'], $_POST['email'], $_POST['password'])) {
 		header("Location:" . URL . "error/index");
 		exit();
 	}

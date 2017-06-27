@@ -12,10 +12,11 @@ function createCustomer($firstname, $lastname, $password, $address, $city, $zipc
 	$telephone = $_POST['telephone'];
 	$mobilephone = $_POST['mobilephone'];
 	$email = $_POST['email'];
+	$role = "customer";
 	
 	$db = openDatabaseConnection();
 
-	$sql = "INSERT INTO customers(firstname, lastname, password, address, city, zipcode, telephone, mobilephone, email) VALUES (:firstname, :lastname, :password, :address, :city, :zipcode, :telephone, :mobilephone, :email)";
+	$sql = "INSERT INTO customers(firstname, lastname, password, address, city, zipcode, telephone, mobilephone, email, role) VALUES (:firstname, :lastname, :password, :address, :city, :zipcode, :telephone, :mobilephone, :email, :role)";
 	$query = $db->prepare($sql);
 	$query->execute(array(
 		':firstname' => $firstname,
@@ -26,7 +27,38 @@ function createCustomer($firstname, $lastname, $password, $address, $city, $zipc
 		':zipcode' => $zipcode,
 		':telephone' => $telephone,
 		':mobilephone' => $mobilephone,
-		':email' => $email
+		':email' => $email,
+		':role' => $role
+	));
+
+	$db = null;
+	
+	return true;
+}
+
+function createEmployee($firstname, $lastname, $telephone, $mobilephone, $email, $password)
+{
+	$firstname = $_POST['firstname'];
+	$lastname = $_POST['lastname'];
+	$password = $_POST['password'];
+	$hash = md5($password);
+	$telephone = $_POST['telephone'];
+	$mobilephone = $_POST['mobilephone'];
+	$email = $_POST['email'];
+	$role = "employee";
+	
+	$db = openDatabaseConnection();
+
+	$sql = "INSERT INTO employees(firstname, lastname, telephone, mobilephone, email, password, role) VALUES (:firstname, :lastname, :telephone, :mobilephone, :email, :password, :role)";
+	$query = $db->prepare($sql);
+	$query->execute(array(
+		':firstname' => $firstname,
+		':lastname' => $lastname,
+		':password' => $hash,
+		':telephone' => $telephone,
+		':mobilephone' => $mobilephone,
+		':email' => $email,
+		':role' => $role
 	));
 
 	$db = null;
@@ -42,11 +74,30 @@ function loginUser($email, $password)
 	$password = md5($_POST['password']);
 
     $result1 = $db->prepare("SELECT * FROM customers WHERE email = '$email' AND  password = '$password'");
- 	$result1->execute();
+    $result1->execute();
  	$row = $result1->fetch(PDO::FETCH_ASSOC);
  	$rowCount = $result1->rowCount();
-
-    if($rowCount == 1 )
+ 	if($rowCount == 0)
+ 	{
+ 		$result2 = $db->prepare("SELECT * FROM employees WHERE email = '$email' AND  password = '$password'");
+    	$result2->execute();
+    	$row = $result2->fetch(PDO::FETCH_ASSOC);
+ 		$rowCount2 = $result2->rowCount();
+ 		if($rowCount2 == 1)
+ 		{
+ 			$_SESSION['userId'] = $row['id'];
+			$_SESSION['logged in'] = true;
+			$_SESSION['email'] = $email;
+			$_SESSION['firstname'] = $row['firstname'];
+			$_SESSION['lastname'] = $row['lastname'];
+			$_SESSION['telephone'] = $row['telephone'];
+			$_SESSION['mobilephone'] = $row['mobilephone'];
+			$_SESSION['role'] = $row['role'];
+			$db = null;
+			return true;
+ 		}
+ 	}
+    elseif($rowCount == 1)
 	{
 		$_SESSION['userId'] = $row['id'];
 		$_SESSION['logged in'] = true;
@@ -58,6 +109,7 @@ function loginUser($email, $password)
 		$_SESSION['zipcode'] = $row['zipcode'];
 		$_SESSION['telephone'] = $row['telephone'];
 		$_SESSION['mobilephone'] = $row['mobilephone'];
+		$_SESSION['role'] = $row['role'];
 		$db = null;
 		return true;
 	}
