@@ -153,19 +153,40 @@ function LogOut()
 	$_SESSION = [];
 }
 
-function getAllUsers()
+function getAllEmployees()
 {
 	$db = openDatabaseConnection();
 
-	$role = "Student";
-
-	$sql = "SELECT * FROM users";
+	$sql = "SELECT * FROM employees";
 	$query = $db->prepare($sql);
 	$query->execute();
 
 	$db = null;
 
 	return $query->fetchAll();
+}
+
+function createAppointment($_date, $_time, $employee_id)
+{
+	$_date = $_POST['_date'];
+	$_time = $_POST['_time'];
+	$employee_id = $_POST['employee_id'];
+	$customer_id = $_SESSION['userId'];
+	
+	$db = openDatabaseConnection();
+
+	$sql = "INSERT INTO appointments(_date, _time, employee_id, customer_id) VALUES (:_date, :_time, :employee_id, :customer_id)";
+	$query = $db->prepare($sql);
+	$query->execute(array(
+		':_date' => $_date,
+		':_time' => $_time,
+		':employee_id' => $employee_id,
+		':customer_id' => $customer_id
+	));
+
+	$db = null;
+	
+	return true;
 }
 
 function getUser($id) 

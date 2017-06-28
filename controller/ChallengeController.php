@@ -97,6 +97,47 @@ function priceList()
 	render("challenge/priceList");
 }
 
+function makeAppointment()
+{
+	if (!IsLoggedInSession())
+	{
+		$_SESSION['errors'][] .= "U moet ingelogd zijn om een afspraak te maken.";
+		render("home/index");
+		exit();
+	}
+	else
+	{
+		render("challenge/makeAppointment", array(
+		'employees' => getAllEmployees()
+		));
+	}
+}
+
+function saveAppointment()
+{
+	if (!IsLoggedInSession())
+	{
+		$_SESSION['errors'][] .= "U moet ingelogd zijn om een afspraak te maken.";
+		render("home/index");
+		exit();
+	}
+	else 
+	{
+		if (empty($_POST['_date']) || empty($_POST['_time']) || empty($_POST['employee_id']))
+		{
+			$_SESSION['errors'][] .= "U heeft niet alle velden ingevuld.";
+			render("challenge/createAppointment");
+			exit();
+		}
+		// if fields are filled, call function
+		elseif(isset($_POST['_date']) && isset($_POST['_time']) && isset($_POST['employee_id']))
+		{
+			createAppointment($_POST['_date'], $_POST['_time'], $_POST['employee_id']);
+			header("Location:" . URL . "home/index");
+		}
+	}
+}
+
 function examsIndex()
 {
 	if (isset($_SESSION['role']) && $_SESSION['role'] == "Docent")

@@ -19,6 +19,11 @@
 <?php if(isset($_SESSION['logged in']) && $_SESSION['role'] == 'employee'): ?>
 
                 <li><a href="<?= URL ?>challenge/create">Kapper toevoegen</a></li>
+                <li><a href="<?= URL ?>challenge/createAppointment">Maak een afspraak</a></li>
+
+<?php elseif(isset($_SESSION['logged in'])): ?>
+
+                <li><a href="<?= URL ?>challenge/makeAppointment">Maak een afspraak</a></li>
 
 <?php endif; ?>
 
