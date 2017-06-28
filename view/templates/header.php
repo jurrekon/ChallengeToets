@@ -22,6 +22,8 @@
 
 <?php endif; ?>
 
+                <li><a href="<?= URL ?>challenge/priceList">Onze prijzen</a></li>
+
 	        </ul>
 
             <!-- navbar part that's on the right side -->

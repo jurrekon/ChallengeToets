@@ -32,7 +32,15 @@ function login()
 
 function register()
 {
-	render("challenge/register");
+	if ( IsLoggedInSession()==true ) {
+		$_SESSION['errors'][] .= "U heeft al ingelogd!";
+		render("home/index");
+		exit();
+	}
+	else
+	{
+		render("challenge/register");
+	}
 }
 
 function registerSave()
@@ -84,37 +92,9 @@ function createSave()
 	header("Location:" . URL . "home/index");
 }
 
-function edit($id)
+function priceList()
 {
-	render("challenge/edit", array(
-		'user' => getUser($id)
-	));
-}
-
-function editSave()
-{
-	if (isset($_POST['id']) &&isset($_POST['firstname']) && isset($_POST['lastname']) && isset($_POST['username']) && isset($_POST['password']) && isset($_POST['email']) && isset($_POST['role']))
-	{
-		editUser($_POST['id'], $_POST['firstname'], $_POST['lastname'], $_POST['username'],  $_POST['password'], $_POST['email'], $_POST['role']);
-		header("Location:" . URL . "home/index");
-		exit();
-	}
-	else
-	{
-		echo "Oops something went wrong!";
-		$_SESSION['errors'][] .= "Er is een fout opgetreden. Probeer opnieuw.";
-	}
-}
-
-function delete($id)
-{
-	if (!deleteUser($id))
-	{
-		header("Location:" . URL . "error/index");
-		exit();
-	}
-
-	header("Location:" . URL . "home/index");
+	render("challenge/priceList");
 }
 
 function examsIndex()
