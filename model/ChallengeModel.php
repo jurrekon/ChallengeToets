@@ -131,6 +131,18 @@ function IsLoggedInSession()
 	}
 }
 
+function createErrorArray()
+{
+	if (!isset($_SESSION['errors']))
+	{
+		$_SESSION['errors'] = [];
+	}
+	else
+	{
+		return true;
+	}
+}
+
 function LogOut()
 {
 	echo "Logged out";

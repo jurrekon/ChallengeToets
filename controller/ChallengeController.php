@@ -5,7 +5,7 @@ require(ROOT . "model/ChallengeModel.php");
 function login()
 {	
 	if ( IsLoggedInSession()==true ) {
-		echo "U heeft al ingelogd!";
+		$_SESSION['errors'][] .= "U heeft al ingelogd!";
 		render("home/index");
 		exit();
 	}
@@ -17,7 +17,7 @@ function login()
 				exit();
 			}else{
 				render("challenge/login");
-				echo 'Sorry er is iets mis gegaan. Probeer opnieuw!';
+				$_SESSION['errors'][] .= "Sorry er is iets mis gegaan. Probeer opnieuw!";
 				exit();
 			}
 		}
@@ -38,7 +38,7 @@ function register()
 function registerSave()
 {
 	if ( IsLoggedInSession()==true ) {
-		echo "U bent al ingelogd!";
+		$_SESSION['errors'][] .= "U heeft al ingelogd!";
 		render("home/index");
 		exit();
 	}
@@ -46,7 +46,7 @@ function registerSave()
 	{
 		if (empty($_POST['firstname']) || empty($_POST['lastname']) || empty($_POST['password']) || empty($_POST['address']) || empty($_POST['city']) || empty($_POST['zipcode']) || empty($_POST['telephone']) || empty($_POST['mobilephone']) || empty($_POST['email']))
 		{
-			echo 'U heeft een veld niet ingevuld';
+			$_SESSION['errors'][] .= "U heeft een veld niet ingevuld.";
 			render("challenge/register");
 			exit();
 		}
@@ -62,7 +62,16 @@ function registerSave()
 
 function create()
 {
-	render("challenge/create");
+	if (isset($_SESSION['logged in']) && $_SESSION['role'] == "employee")
+	{
+		render("challenge/create");
+	}
+	else
+	{
+		$_SESSION['errors'][] .= "U heeft geen toegang tot deze pagina.";
+		render("home/index");
+	}
+	
 }
 
 function createSave()
@@ -93,6 +102,7 @@ function editSave()
 	else
 	{
 		echo "Oops something went wrong!";
+		$_SESSION['errors'][] .= "Er is een fout opgetreden. Probeer opnieuw.";
 	}
 }
 
