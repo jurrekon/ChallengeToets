@@ -132,7 +132,7 @@ function saveAppointment()
 		// if fields are filled, call function
 		elseif(isset($_POST['_date']) && isset($_POST['_time']) && isset($_POST['employee_id']))
 		{
-			if(checkIfAppointmentExists($_POST['_date'], $_POST['_time'], $_POST['employee_id']))
+			if(checkIfAppointmentExists($_POST['_date'], $_POST['_time'], $_POST['employee_id']) == false)
 			{
 				createAppointment($_POST['_date'], $_POST['_time'], $_POST['employee_id']);
 				header("Location:" . URL . "home/index");

@@ -204,10 +204,19 @@ function checkIfAppointmentExists($_date, $_time, $employee_id)
 		':_time' => $_time,
 		':employee_id' => $employee_id,
 	));
+	$row = $query->fetch(PDO::FETCH_ASSOC);
+ 	$rowCount = $query->rowCount();
 
 	$db = null;
 	
-	return false;
+	if($rowCount > 0)
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
 }
 
 function getUser($id) 
