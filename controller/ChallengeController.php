@@ -135,6 +135,7 @@ function saveAppointment()
 			if(checkIfAppointmentExists($_POST['_date'], $_POST['_time'], $_POST['employee_id']) == false)
 			{
 				createAppointment($_POST['_date'], $_POST['_time'], $_POST['employee_id']);
+				$_SESSION['info'][] .= "U heeft gereserveerd voor een afspraak.";
 				header("Location:" . URL . "home/index");
 			}
 			else

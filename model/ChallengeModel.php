@@ -143,6 +143,18 @@ function createErrorArray()
 	}
 }
 
+function createInfoArray()
+{
+	if (!isset($_SESSION['info']))
+	{
+		$_SESSION['info'] = [];
+	}
+	else
+	{
+		return true;
+	}
+}
+
 function LogOut()
 {
 	echo "Logged out";
