@@ -189,6 +189,27 @@ function createAppointment($_date, $_time, $employee_id)
 	return true;
 }
 
+function checkIfAppointmentExists($_date, $_time, $employee_id)
+{
+	$_date = $_POST['_date'];
+	$_time = $_POST['_time'];
+	$employee_id = $_POST['employee_id'];
+	
+	$db = openDatabaseConnection();
+
+	$sql = "SELECT * FROM appointments WHERE _date = '$_date' AND _time = '$_time' AND employee_id = '$employee_id'";
+	$query = $db->prepare($sql);
+	$query->execute(array(
+		':_date' => $_date,
+		':_time' => $_time,
+		':employee_id' => $employee_id,
+	));
+
+	$db = null;
+	
+	return false;
+}
+
 function getUser($id) 
 {
 	$db = openDatabaseConnection();

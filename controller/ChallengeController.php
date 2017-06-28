@@ -126,14 +126,22 @@ function saveAppointment()
 		if (empty($_POST['_date']) || empty($_POST['_time']) || empty($_POST['employee_id']))
 		{
 			$_SESSION['errors'][] .= "U heeft niet alle velden ingevuld.";
-			render("challenge/createAppointment");
+			header("Location:" . URL . "challenge/makeAppointment");
 			exit();
 		}
 		// if fields are filled, call function
 		elseif(isset($_POST['_date']) && isset($_POST['_time']) && isset($_POST['employee_id']))
 		{
-			createAppointment($_POST['_date'], $_POST['_time'], $_POST['employee_id']);
-			header("Location:" . URL . "home/index");
+			if(checkIfAppointmentExists($_POST['_date'], $_POST['_time'], $_POST['employee_id']))
+			{
+				createAppointment($_POST['_date'], $_POST['_time'], $_POST['employee_id']);
+				header("Location:" . URL . "home/index");
+			}
+			else
+			{
+				$_SESSION['errors'][] .= "Deze tijd en datum zijn al bezet voor deze kapster.";
+				header("Location:" . URL . "challenge/makeAppointment");
+			}
 		}
 	}
 }
